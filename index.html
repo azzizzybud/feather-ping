@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feather Ping Reminder</title>
+</head>
+<body>
+  <script>
+    const reminderQuotes = [
+      "Where is my ab now? Am I defending, chasing, avoiding, or clear?",
+      "Let me see Isfet, not fight it.",
+      "This moment doesn’t need defense—it needs clarity.",
+      "Let me not chase Ma’at as an ideal.",
+      "Let me rest in the space between desire and distortion."
+    ];
+
+    let reminderInterval;
+    let isRunning = false;
+
+    function getRandomQuote() {
+      return reminderQuotes[Math.floor(Math.random() * reminderQuotes.length)];
+    }
+
+    function showReminder() {
+      const notification = new Notification("Feather Ping", {
+        body: getRandomQuote(),
+        icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Maat.svg/1200px-Maat.svg.png"
+      });
+      const audio = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
+      audio.play();
+    }
+
+    function toggleReminders() {
+      if (!isRunning) {
+        reminderInterval = setInterval(showReminder, 60 * 60 * 1000); // Every hour
+        isRunning = true;
+        document.getElementById("toggle-btn").innerText = "Turn Off Reminders";
+      } else {
+        clearInterval(reminderInterval);
+        isRunning = false;
+        document.getElementById("toggle-btn").innerText = "Turn On Reminders";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      if (Notification.permission !== "granted") {
+        Notification.requestPermission();
+      }
+
+      const toggleBtn = document.createElement("button");
+      toggleBtn.id = "toggle-btn";
+      toggleBtn.innerText = "Turn On Reminders";
+      toggleBtn.style = "padding: 10px 20px; font-size: 18px; margin: 40px auto; display: block;";
+      toggleBtn.onclick = toggleReminders;
+
+      document.body.appendChild(toggleBtn);
+    });
+  </script>
+</body>
+</html>
