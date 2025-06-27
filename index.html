@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fdf6e3">
+  <link rel="manifest" href="manifest.json">
   <title>Feather Ping Reminder</title>
 </head>
 <body>
@@ -33,7 +35,7 @@
 
     function toggleReminders() {
       if (!isRunning) {
-        reminderInterval = setInterval(showReminder, 60 * 60 * 1000); // Every hour
+        reminderInterval = setInterval(showReminder, 60 * 60 * 1000);
         isRunning = true;
         document.getElementById("toggle-btn").innerText = "Turn Off Reminders";
       } else {
@@ -56,6 +58,14 @@
 
       document.body.appendChild(toggleBtn);
     });
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log("Service Worker registered."))
+        .catch(error => console.log("Service Worker registration failed:", error));
+    }
   </script>
 </body>
 </html>
